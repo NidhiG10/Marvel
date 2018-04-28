@@ -56,4 +56,10 @@ extension MarvelAPI: TargetType {
             return Data()
         }
     }
+    
+    func authParameters() -> [String: String] {
+        return ["apikey": MarvelAPIConfiguration.apiKey,
+                "ts": MarvelAPIConfiguration.timeStamp,
+                "hash": MarvelAPIConfiguration.hashKey]
+    }
 }
