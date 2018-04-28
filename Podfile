@@ -7,7 +7,7 @@ target 'Marvel' do
 
   # Pods for Marvel
 
-pod 'Moya/RxSwift','~> 8.0.0-beta.1'
+pod 'Moya/RxSwift','~> 10.0’
   target 'MarvelTests' do
     inherit! :search_paths
     # Pods for testing

@@ -137,6 +137,7 @@
 		2DBA7E112094842C0056F3BD /* Marvel */ = {
 			isa = PBXGroup;
 			children = (
+				2DBA7E4B2094F0390056F3BD /* API Service */,
 				2DBA7E122094842C0056F3BD /* AppDelegate.swift */,
 				2DBA7E142094842C0056F3BD /* ViewController.swift */,
 				2DBA7E162094842C0056F3BD /* Main.storyboard */,
@@ -163,6 +164,13 @@
 				2DBA7E342094842C0056F3BD /* Info.plist */,
 			);
 			path = MarvelUITests;
+			sourceTree = "<group>";
+		};
+		2DBA7E4B2094F0390056F3BD /* API Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "API Service";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
