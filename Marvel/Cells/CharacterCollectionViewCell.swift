@@ -77,7 +77,8 @@ class CharacterCollectionCell: UICollectionViewCell {
     // MARK: - Public methods
     
     func configure(withCharacter character: Character) {
-        self.name.text = character.name
+        name.text = character.name
+        imageView.download(image: character.image?.fullPath() ?? "")
     }
     
     static func size(for parentWidth: CGFloat) -> CGSize {
