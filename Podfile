@@ -9,6 +9,7 @@ target 'Marvel' do
 
 pod 'Moya/RxSwift','~> 10.0’
 pod 'CryptoSwift'
+pod 'Kingfisher'
 
   target 'MarvelTests' do
     inherit! :search_paths
