@@ -10,6 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    lazy var searchBar:UISearchBar = {
+        let sb = UISearchBar()
+        sb.sizeToFit()
+        sb.isTranslucent = true
+        return sb
+    }()
+    
     lazy var flowLayout:UICollectionViewFlowLayout = {
         let f = UICollectionViewFlowLayout()
         f.scrollDirection = UICollectionViewScrollDirection.vertical
@@ -19,8 +26,6 @@ class ViewController: UIViewController {
     lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.flowLayout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-        
-//        cv.setCollectionViewLayout(self.flowLayout, animated: true)
         return cv
     }()
     
@@ -46,6 +51,7 @@ class ViewController: UIViewController {
         
         view.addSubview(self.collectionView)
         view.addSubview(self.activityIndicator)
+        view.addSubview(self.searchBar)
         
         setupConstraints()
         
@@ -55,11 +61,15 @@ class ViewController: UIViewController {
     func setupConstraints() {
         self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.collectionView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor).isActive = true
         self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        self.searchBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.searchBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.searchBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
     }
 
     func hideNavigationBarActivityIndicator() {
