@@ -16,7 +16,11 @@ extension Character {
         entity.id = (dictionary["id"]?.integer)!
         entity.name = dictionary["name"]?.string
         entity.bio = dictionary["description"]?.string
-        entity.image = dictionary["thumbnail"]?.string
+        
+        if let dictionary = dictionary["thumbnail"]?.object, let imageInfo = ThumbnailImage.entity(withDictionary: dictionary) {
+            entity.image = imageInfo
+        }
+        
         return entity
     }
 }
