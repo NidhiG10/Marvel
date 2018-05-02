@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MarvelCharactersViewModel: NSObject, MVVMBinding, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class MarvelCharactersViewModel: NSObject, MVVMBinding, UICollectionViewDelegateFlowLayout {
     
     /// Closure used to notify results or messages to the view
     var messagesClosure: ((Message) -> Void)?
@@ -35,8 +35,31 @@ class MarvelCharactersViewModel: NSObject, MVVMBinding, UICollectionViewDataSour
         self.collectionView?.reloadData()
     }
     
-    // MARK: - UICollectionViewDataSource methods
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize.zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
+    }
+    
+    fileprivate func process(characters: [Character]) {
+        self.characters = characters
+        self.collectionView?.reloadData()
+    }
+}
+
+extension MarvelCharactersViewModel : UICollectionViewDataSource {
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -52,26 +75,14 @@ class MarvelCharactersViewModel: NSObject, MVVMBinding, UICollectionViewDataSour
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize.zero
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.size.width - 10.0
+        return CharacterCollectionCell.size(for: width)
     }
+}
+
+extension MarvelCharactersViewModel : UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.zero
-    }
-    
-    fileprivate func process(characters: [Character]) {
-        self.characters = characters
-        self.collectionView?.reloadData()
-    }
 }
 
 extension MarvelCharactersViewModel {

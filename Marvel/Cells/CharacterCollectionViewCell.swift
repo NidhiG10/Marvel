@@ -52,29 +52,37 @@ class CharacterCollectionCell: UICollectionViewCell {
         contentView.addSubview(imageView)
         contentView.addSubview(bottomView)
         bottomView.addSubview(name)
+        addContraints()
     }
     
     func addContraints() {
-        name.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor)
-        name.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
-        name.topAnchor.constraint(equalTo: self.contentView.topAnchor)
-        name.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
         
         bottomView.translatesAutoresizingMaskIntoConstraints = false
-        bottomView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor)
-        bottomView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
-        bottomView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        bottomView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        bottomView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        bottomView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
         
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor)
-        imageView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor)
-        imageView.topAnchor.constraint(equalTo: bottomView.topAnchor)
-        imageView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+        name.translatesAutoresizingMaskIntoConstraints = false
+        name.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor).isActive = true
+        name.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor).isActive = true
+        name.topAnchor.constraint(equalTo: bottomView.topAnchor).isActive = true
+        name.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor).isActive = true
     }
     
     // MARK: - Public methods
     
     func configure(withCharacter character: Character) {
         self.name.text = character.name
+    }
+    
+    static func size(for parentWidth: CGFloat) -> CGSize {
+        let numberOfCells = CGFloat(2)
+        let width = parentWidth / numberOfCells
+        return CGSize(width: width, height: width)
     }
 }

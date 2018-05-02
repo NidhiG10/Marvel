@@ -23,12 +23,11 @@ enum MarvelAPI {
 }
 
 extension MarvelAPI: TargetType {
+    var baseURL: URL { return URL(string: "https://gateway.marvel.com:443")! }
+    
     var headers: [String : String]? {
         return ["Content-type": "application/json"]
     }
-    
-    var baseURL: URL { return URL(string: "")! }
-    
     
     var path: String {
         switch self {
@@ -47,13 +46,28 @@ extension MarvelAPI: TargetType {
     }
     
     var task: Task {
-        return .requestPlain
+        return .requestParameters(parameters: parameters!, encoding: URLEncoding.queryString)
     }
     
     var sampleData: Data {
         switch self {
         default:
             return Data()
+        }
+    }
+    
+    var parameters: [String: Any]? {
+        
+        switch self {
+        
+        case .showCharacters(let query):
+            if let query = query {
+                return authParameters().merged(another: ["nameStartsWith": query])
+            }
+            return authParameters()
+            
+        case .showCharacterDetails(let characterId):
+            return authParameters().merged(another: ["characterId": characterId])
         }
     }
     

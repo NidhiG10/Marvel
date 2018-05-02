@@ -10,7 +10,7 @@ import Foundation
 
 class Character: NSObject {
     var id: Int = 0
-    var name: String = ""
-    var bio: String = ""
-    var image: String = ""
+    var name: String? = ""
+    var bio: String? = ""
+    var image: String? = ""
 }
