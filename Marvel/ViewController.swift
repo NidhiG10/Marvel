@@ -46,9 +46,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        self.automaticallyAdjustsScrollViewInsets = false
-        
+
         view.addSubview(self.collectionView)
         view.addSubview(self.activityIndicator)
         view.addSubview(self.searchBar)
@@ -75,6 +73,11 @@ class ViewController: UIViewController {
     func hideNavigationBarActivityIndicator() {
         self.activityIndicator.startAnimating()
     }
+    
+    func showCharacterDetails(_ character:Character) {
+        let characterDetailsVC = CharacterDetailsViewController(character: character)
+        self.navigationController?.pushViewController(characterDetailsVC, animated: true)
+    }
 
 }
 
@@ -88,8 +91,8 @@ extension ViewController {
                 switch message {
                 case .charactersFetched:
                     self?.hideNavigationBarActivityIndicator()
-                case .characterInfofetched:
-                    self?.hideNavigationBarActivityIndicator()
+                case let .showCharacterDetails(character):
+                    self?.showCharacterDetails(character)
                 }
         }
     }

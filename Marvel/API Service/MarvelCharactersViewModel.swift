@@ -83,6 +83,10 @@ extension MarvelCharactersViewModel : UICollectionViewDataSource {
 
 extension MarvelCharactersViewModel : UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let character = self.characters[indexPath.row]
+        self.messagesClosure?(.showCharacterDetails(character))
+    }
 }
 
 extension MarvelCharactersViewModel {
@@ -93,7 +97,7 @@ extension MarvelCharactersViewModel {
     
     enum Message {
         case charactersFetched
-        case characterInfofetched
+        case showCharacterDetails(Character)
     }
     
     func didReceive(signal: Signal) {

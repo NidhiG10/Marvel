@@ -27,10 +27,7 @@ extension Response {
 class MarvelNetworkHandler: NSObject, MVVMBinding {
     
     var messagesClosure: ((Message) -> Void)?
-//    fileprivate var statusesQueue: [Character]
-    
     let provider: MoyaProvider<MarvelAPI>
-//    let disposeBag = DisposeBag()
     
     override init() {
         provider = MoyaProvider<MarvelAPI>()
@@ -44,8 +41,7 @@ class MarvelNetworkHandler: NSObject, MVVMBinding {
         provider.request(token) { (result) in
             switch result {
             case let .success(moyaResponse):
-                let data = moyaResponse.removeAPIWrappers() // Data, your JSON response is probably in here!
-//                let statusCode = moyaResponse.statusCode // Int - 200, 401, 500, etc
+                let data = moyaResponse.removeAPIWrappers()
                 
                 do {
                     let jsonData = try data.mapJSON()
