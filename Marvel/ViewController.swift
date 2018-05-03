@@ -91,6 +91,14 @@ class ViewController: UIViewController {
 
 }
 
+extension ViewController {
+    @IBAction func showAsGrid(_ sender: UIButton) {
+    }
+    
+    @IBAction func showAsTable(_ sender: UIButton) {
+    }
+}
+
 /**
  MVVM Binding methods and definitions
  */
