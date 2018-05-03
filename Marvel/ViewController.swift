@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var isShowingList = true
+    
     lazy var searchBar:UISearchBar = {
         let sb = UISearchBar()
         sb.sizeToFit()
@@ -30,6 +32,14 @@ class ViewController: UIViewController {
         return cv
     }()
     
+    lazy var tableView: UITableView = {
+        let tv = UITableView(frame: .zero, style: .plain)
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.rowHeight = UITableViewAutomaticDimension
+        tv.estimatedRowHeight = 44
+        return tv
+    }()
+    
     lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         indicator.translatesAutoresizingMaskIntoConstraints = false
@@ -38,10 +48,20 @@ class ViewController: UIViewController {
         return indicator
     }()
     
-    fileprivate(set) lazy var viewModel: MarvelCollectionViewModel = {
-        let viewModel = MarvelCollectionViewModel(collectionView: self.collectionView)
+    fileprivate(set) lazy var viewModel: MarvelViewModel = {
+        let viewModel = MarvelViewModel()
         viewModel.subscribe(withClosure: self.didReceiveViewModelMessageClosure())
         return viewModel
+    }()
+    
+    fileprivate(set) lazy var collectionViewDataSource: MarvelCollectionDataSource = {
+        let ds = MarvelCollectionDataSource(collectionView: self.collectionView)
+        return ds
+    }()
+    
+    fileprivate(set) lazy var tableViewDataSource: MarvelTableDataSource = {
+        let ds = MarvelTableDataSource(tableView: self.tableView)
+        return ds
     }()
     
     override func viewDidLoad() {
@@ -50,13 +70,17 @@ class ViewController: UIViewController {
 
         self.edgesForExtendedLayout = [];
         view.addSubview(self.collectionView)
+        view.addSubview(self.tableView)
         view.addSubview(self.activityIndicator)
         view.addSubview(self.searchBar)
         
         self.searchBar.delegate = self.viewModel
+        self.collectionView.delegate = self.viewModel
+        self.tableView.delegate = self.viewModel
+        
         setupConstraints()
         
-        viewModel.send(signal: .fetchCharacters(nil))
+        self.viewModel.send(signal: .fetchCharacters(nil))
     }
 
     func setupConstraints() {
@@ -64,6 +88,11 @@ class ViewController: UIViewController {
         self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         self.collectionView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor).isActive = true
         self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.tableView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor).isActive = true
+        self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -78,9 +107,14 @@ class ViewController: UIViewController {
         self.collectionView.isHidden = true
     }
     
-    func hideNavigationBarActivityIndicator() {
+    func reloadData(characters: [Character]) {
         self.activityIndicator.stopAnimating()
-        self.collectionView.isHidden = false
+        if isShowingList {
+            self.tableView.isHidden = false
+            self.tableViewDataSource.process(characters: characters)
+        } else {
+            self.collectionView.isHidden = false
+        }
     }
     
     func showCharacterDetails(_ character:Character) {
@@ -104,13 +138,13 @@ extension ViewController {
  */
 extension ViewController {
     
-        func didReceiveViewModelMessageClosure() -> ((MarvelCollectionViewModel.Message) -> Void) {
+        func didReceiveViewModelMessageClosure() -> ((MarvelViewModel.Message) -> Void) {
             return { [weak self] message in
                 switch message {
                 case .fetchingCharacters:
                     self?.startAnimatingActivityIndicator()
-                case .charactersFetched:
-                    self?.hideNavigationBarActivityIndicator()
+                case let .charactersFetched(characters):
+                    self?.reloadData(characters: characters)
                 case let .showCharacterDetails(character):
                     self?.showCharacterDetails(character)
                 }

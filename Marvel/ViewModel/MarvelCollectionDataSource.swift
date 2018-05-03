@@ -8,9 +8,10 @@
 
 import UIKit
 
-class MarvelCollectionViewModel: MarvelViewModel, UICollectionViewDelegateFlowLayout {
+class MarvelCollectionDataSource: NSObject, UICollectionViewDelegateFlowLayout {
     
     let cellReuseIdentifier = "collectionCell"
+    fileprivate(set) var characters: [Character]?
     fileprivate(set) weak var collectionView: UICollectionView?
     
     init(collectionView: UICollectionView) {
@@ -18,7 +19,6 @@ class MarvelCollectionViewModel: MarvelViewModel, UICollectionViewDelegateFlowLa
         
         self.collectionView = collectionView
         self.collectionView?.dataSource = self
-        self.collectionView?.delegate = self
         self.collectionView?.register(CharacterCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         self.collectionView?.reloadData()
     }
@@ -39,39 +39,33 @@ class MarvelCollectionViewModel: MarvelViewModel, UICollectionViewDelegateFlowLa
         return UIEdgeInsets.zero
     }
     
-    override func process(characters: [Character]) {
-        super.process(characters: characters)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.size.width - 10.0
+        return CharacterCollectionCell.size(for: width)
+    }
+    
+    func process(characters: [Character]) {
+        self.characters = characters
         self.collectionView?.reloadData()
     }
 }
 
-extension MarvelCollectionViewModel : UICollectionViewDataSource {
+extension MarvelCollectionDataSource : UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.characters.count
+        return self.characters?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CharacterCollectionCell
-        let character = self.characters[indexPath.item]
-        cell.configure(withCharacter: character)
+        if let character = self.characters?[indexPath.item] {
+            cell.configure(withCharacter: character)
+        }
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.size.width - 10.0
-        return CharacterCollectionCell.size(for: width)
     }
 }
 
-extension MarvelCollectionViewModel : UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let character = self.characters[indexPath.row]
-        self.messagesClosure?(.showCharacterDetails(character))
-    }
-}

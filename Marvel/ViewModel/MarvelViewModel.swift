@@ -39,6 +39,26 @@ extension MarvelViewModel: UISearchBarDelegate {
     }
 }
 
+extension MarvelViewModel : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let character = self.characters[indexPath.row]
+        self.messagesClosure?(.showCharacterDetails(character))
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CharacterTableViewCell.height()
+    }
+}
+
+extension MarvelViewModel : UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let character = self.characters[indexPath.row]
+        self.messagesClosure?(.showCharacterDetails(character))
+    }
+}
+
 extension MarvelViewModel {
     
     enum Signal {
@@ -47,7 +67,7 @@ extension MarvelViewModel {
     
     enum Message {
         case fetchingCharacters
-        case charactersFetched
+        case charactersFetched([Character])
         case showCharacterDetails(Character)
     }
     
@@ -65,7 +85,7 @@ extension MarvelViewModel {
         return { [weak self] message in
             switch message {
             case let .charactersFetched(characters):
-                self?.messagesClosure?(.charactersFetched)
+                self?.messagesClosure?(.charactersFetched(characters))
                 self?.process(characters: characters)
             case .errorReceived(_):
                 // TODO: Handle this
