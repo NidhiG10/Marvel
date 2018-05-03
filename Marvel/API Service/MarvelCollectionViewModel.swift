@@ -8,24 +8,12 @@
 
 import UIKit
 
-class MarvelCharactersViewModel: NSObject, MVVMBinding, UICollectionViewDelegateFlowLayout {
-    
-    /// Closure used to notify results or messages to the view
-    var messagesClosure: ((Message) -> Void)?
-    
-    fileprivate(set) lazy var networkHandler: MarvelNetworkHandler = {
-        let handler = MarvelNetworkHandler()
-        handler.subscribe(withClosure: self.didReceiveModelMessageClosure())
-        return handler
-    }()
+class MarvelCollectionViewModel: MarvelViewModel, UICollectionViewDelegateFlowLayout {
     
     let cellReuseIdentifier = "collectionCell"
     fileprivate(set) weak var collectionView: UICollectionView?
     
-    fileprivate(set) var characters: [Character]
-    
     init(collectionView: UICollectionView) {
-        self.characters = []
         super.init()
         
         self.collectionView = collectionView
@@ -34,7 +22,6 @@ class MarvelCharactersViewModel: NSObject, MVVMBinding, UICollectionViewDelegate
         self.collectionView?.register(CharacterCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         self.collectionView?.reloadData()
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize.zero
@@ -52,13 +39,13 @@ class MarvelCharactersViewModel: NSObject, MVVMBinding, UICollectionViewDelegate
         return UIEdgeInsets.zero
     }
     
-    fileprivate func process(characters: [Character]) {
-        self.characters = characters
+    override func process(characters: [Character]) {
+        super.process(characters: characters)
         self.collectionView?.reloadData()
     }
 }
 
-extension MarvelCharactersViewModel : UICollectionViewDataSource {
+extension MarvelCollectionViewModel : UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -81,46 +68,10 @@ extension MarvelCharactersViewModel : UICollectionViewDataSource {
     }
 }
 
-extension MarvelCharactersViewModel : UICollectionViewDelegate {
+extension MarvelCollectionViewModel : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let character = self.characters[indexPath.row]
         self.messagesClosure?(.showCharacterDetails(character))
     }
-}
-
-extension MarvelCharactersViewModel {
-    
-    enum Signal {
-        case fetchCharacters(String?)
-    }
-    
-    enum Message {
-        case charactersFetched
-        case showCharacterDetails(Character)
-    }
-    
-    func didReceive(signal: Signal) {
-        switch signal {
-        case let .fetchCharacters(keyword):
-            self.networkHandler.send(signal: .getCharacters(keyword))
-        }
-    }
-    
-    /**
-     Messages received from model
-     */
-    func didReceiveModelMessageClosure() -> ((MarvelNetworkHandler.Message) -> Void) {
-        return { [weak self] message in
-            switch message {
-            case let .charactersFetched(characters):
-                self?.messagesClosure?(.charactersFetched)
-                self?.process(characters: characters)
-            case .errorReceived(_):
-                // TODO: Handle this
-                break
-            }
-        }
-    }
-    
 }

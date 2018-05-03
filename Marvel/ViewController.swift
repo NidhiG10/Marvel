@@ -14,6 +14,7 @@ class ViewController: UIViewController {
         let sb = UISearchBar()
         sb.sizeToFit()
         sb.isTranslucent = true
+        sb.showsCancelButton = true
         return sb
     }()
     
@@ -30,15 +31,15 @@ class ViewController: UIViewController {
     }()
     
     lazy var activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
         indicator.startAnimating()
         return indicator
     }()
     
-    fileprivate(set) lazy var viewModel: MarvelCharactersViewModel = {
-        let viewModel = MarvelCharactersViewModel(collectionView: self.collectionView)
+    fileprivate(set) lazy var viewModel: MarvelCollectionViewModel = {
+        let viewModel = MarvelCollectionViewModel(collectionView: self.collectionView)
         viewModel.subscribe(withClosure: self.didReceiveViewModelMessageClosure())
         return viewModel
     }()
@@ -47,10 +48,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 
+        self.edgesForExtendedLayout = [];
         view.addSubview(self.collectionView)
         view.addSubview(self.activityIndicator)
         view.addSubview(self.searchBar)
         
+        self.searchBar.delegate = self.viewModel
         setupConstraints()
         
         viewModel.send(signal: .fetchCharacters(nil))
@@ -70,11 +73,18 @@ class ViewController: UIViewController {
         self.searchBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
     }
 
-    func hideNavigationBarActivityIndicator() {
+    func startAnimatingActivityIndicator() {
         self.activityIndicator.startAnimating()
+        self.collectionView.isHidden = true
+    }
+    
+    func hideNavigationBarActivityIndicator() {
+        self.activityIndicator.stopAnimating()
+        self.collectionView.isHidden = false
     }
     
     func showCharacterDetails(_ character:Character) {
+        self.searchBar.resignFirstResponder()
         let characterDetailsVC = CharacterDetailsViewController(character: character)
         self.navigationController?.pushViewController(characterDetailsVC, animated: true)
     }
@@ -86,9 +96,11 @@ class ViewController: UIViewController {
  */
 extension ViewController {
     
-        func didReceiveViewModelMessageClosure() -> ((MarvelCharactersViewModel.Message) -> Void) {
+        func didReceiveViewModelMessageClosure() -> ((MarvelCollectionViewModel.Message) -> Void) {
             return { [weak self] message in
                 switch message {
+                case .fetchingCharacters:
+                    self?.startAnimatingActivityIndicator()
                 case .charactersFetched:
                     self?.hideNavigationBarActivityIndicator()
                 case let .showCharacterDetails(character):
