@@ -14,11 +14,14 @@ class MarvelCollectionDataSource: NSObject, UICollectionViewDelegateFlowLayout {
     fileprivate(set) var characters: [Character]?
     fileprivate(set) weak var collectionView: UICollectionView?
     
+    var showCharacterDetails:((Character) -> Void)?
+    
     init(collectionView: UICollectionView) {
         super.init()
         
         self.collectionView = collectionView
         self.collectionView?.dataSource = self
+        self.collectionView?.delegate = self
         self.collectionView?.register(CharacterCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         self.collectionView?.reloadData()
     }
@@ -66,6 +69,15 @@ extension MarvelCollectionDataSource : UICollectionViewDataSource {
             cell.configure(withCharacter: character)
         }
         return cell
+    }
+}
+
+extension MarvelCollectionDataSource : UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let character = self.characters?[indexPath.row] {
+            self.showCharacterDetails?(character)
+        }
     }
 }
 

@@ -14,11 +14,14 @@ class MarvelTableDataSource: NSObject {
     fileprivate(set) weak var tableView: UITableView?
     fileprivate(set) var characters: [Character]?
     
+    var showCharacterDetails: ((Character) -> Void)?
+    
     init(tableView: UITableView) {
         super.init()
         
         self.tableView = tableView
         self.tableView?.dataSource = self
+        self.tableView?.delegate = self
         self.tableView?.register(CharacterTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         self.tableView?.reloadData()
     }
@@ -41,5 +44,18 @@ extension MarvelTableDataSource : UITableViewDataSource {
             cell.configure(withCharacter: character)
         }
         return cell
+    }
+}
+
+extension MarvelTableDataSource : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let character = self.characters?[indexPath.row]{
+            self.showCharacterDetails?(character)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CharacterTableViewCell.height()
     }
 }

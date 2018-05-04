@@ -56,11 +56,19 @@ class ViewController: UIViewController {
     
     fileprivate(set) lazy var collectionViewDataSource: MarvelCollectionDataSource = {
         let ds = MarvelCollectionDataSource(collectionView: self.collectionView)
+        ds.showCharacterDetails = {[weak self]
+            (character) -> Void in
+            self?.showCharacterDetails(character)
+        }
         return ds
     }()
     
     fileprivate(set) lazy var tableViewDataSource: MarvelTableDataSource = {
         let ds = MarvelTableDataSource(tableView: self.tableView)
+        ds.showCharacterDetails = {[weak self]
+            (character) -> Void in
+            self?.showCharacterDetails(character)
+        }
         return ds
     }()
     
@@ -75,8 +83,6 @@ class ViewController: UIViewController {
         view.addSubview(self.searchBar)
         
         self.searchBar.delegate = self.viewModel
-        self.collectionView.delegate = self.viewModel
-        self.tableView.delegate = self.viewModel
         
         setupConstraints()
         
@@ -110,10 +116,13 @@ class ViewController: UIViewController {
     func reloadData(characters: [Character]) {
         self.activityIndicator.stopAnimating()
         if isShowingList {
+            self.collectionView.isHidden = true
             self.tableView.isHidden = false
             self.tableViewDataSource.process(characters: characters)
         } else {
+            self.tableView.isHidden = true
             self.collectionView.isHidden = false
+            self.collectionViewDataSource.process(characters: characters)
         }
     }
     
@@ -127,9 +136,14 @@ class ViewController: UIViewController {
 
 extension ViewController {
     @IBAction func showAsGrid(_ sender: UIButton) {
+        isShowingList = false
+        reloadData(characters: self.viewModel.characters)
+        
     }
     
     @IBAction func showAsTable(_ sender: UIButton) {
+        isShowingList = true
+        reloadData(characters: self.viewModel.characters)
     }
 }
 

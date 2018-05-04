@@ -39,26 +39,6 @@ extension MarvelViewModel: UISearchBarDelegate {
     }
 }
 
-extension MarvelViewModel : UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let character = self.characters[indexPath.row]
-        self.messagesClosure?(.showCharacterDetails(character))
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CharacterTableViewCell.height()
-    }
-}
-
-extension MarvelViewModel : UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let character = self.characters[indexPath.row]
-        self.messagesClosure?(.showCharacterDetails(character))
-    }
-}
-
 extension MarvelViewModel {
     
     enum Signal {
