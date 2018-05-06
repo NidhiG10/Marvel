@@ -10,15 +10,17 @@ target 'Marvel' do
 pod 'Moya/RxSwift','~> 10.0’
 pod 'CryptoSwift'
 pod 'Kingfisher'
+end
 
-  target 'MarvelTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+target 'MarvelTests' do
+use_frameworks!
+pod 'Quick'
+pod 'Nimble'
+pod 'Fakery'
+pod 'ObjectMapper'
+end
 
-  target 'MarvelUITests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
+target 'MarvelUITests' do
+inherit! :search_paths
+# Pods for testing
 end
