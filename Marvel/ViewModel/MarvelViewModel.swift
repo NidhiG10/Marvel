@@ -12,13 +12,18 @@ class MarvelViewModel: NSObject, MVVMBinding {
     
     /// Closure used to notify results or messages to the view
     var messagesClosure: ((Message) -> Void)?
-    fileprivate(set) var characters: [Character] = []
+    var characters: [Character]
     
     fileprivate(set) lazy var networkHandler: MarvelNetworkHandler = {
         let handler = MarvelNetworkHandler()
         handler.subscribe(withClosure: self.didReceiveModelMessageClosure())
         return handler
     }()
+    
+    override init() {
+        characters = []
+        super.init()
+    }
     
     public func process(characters: [Character]) {
         self.characters = characters

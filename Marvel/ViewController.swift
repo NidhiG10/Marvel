@@ -48,13 +48,13 @@ class ViewController: UIViewController {
         return indicator
     }()
     
-    fileprivate(set) lazy var viewModel: MarvelViewModel = {
+    lazy var viewModel: MarvelViewModel = {
         let viewModel = MarvelViewModel()
         viewModel.subscribe(withClosure: self.didReceiveViewModelMessageClosure())
         return viewModel
     }()
     
-    fileprivate(set) lazy var collectionViewDataSource: MarvelCollectionDataSource = {
+    lazy var collectionViewDataSource: MarvelCollectionDataSource = {
         let ds = MarvelCollectionDataSource(collectionView: self.collectionView)
         ds.showCharacterDetails = {[weak self]
             (character) -> Void in
@@ -63,7 +63,7 @@ class ViewController: UIViewController {
         return ds
     }()
     
-    fileprivate(set) lazy var tableViewDataSource: MarvelTableDataSource = {
+    lazy var tableViewDataSource: MarvelTableDataSource = {
         let ds = MarvelTableDataSource(tableView: self.tableView)
         ds.showCharacterDetails = {[weak self]
             (character) -> Void in
