@@ -48,11 +48,7 @@ class ViewController: UIViewController {
         return indicator
     }()
     
-    lazy var viewModel: MarvelViewModel = {
-        let viewModel = MarvelViewModel()
-        viewModel.subscribe(withClosure: self.didReceiveViewModelMessageClosure())
-        return viewModel
-    }()
+    var viewModel: MarvelViewModel = MarvelViewModel()
     
     lazy var collectionViewDataSource: MarvelCollectionDataSource = {
         let ds = MarvelCollectionDataSource(collectionView: self.collectionView)
@@ -82,11 +78,15 @@ class ViewController: UIViewController {
         view.addSubview(self.activityIndicator)
         view.addSubview(self.searchBar)
         
-        self.searchBar.delegate = self.viewModel
-        
         setupConstraints()
         
+        subscribeViewModel()
+        self.searchBar.delegate = self.viewModel
         self.viewModel.send(signal: .fetchCharacters(nil))
+    }
+    
+    func subscribeViewModel() {
+        viewModel.subscribe(withClosure: self.didReceiveViewModelMessageClosure())
     }
 
     func setupConstraints() {
