@@ -26,6 +26,7 @@ class MarvelViewModel: NSObject, MVVMBinding {
     }
     
     public func process(characters: [Character]) {
+        self.messagesClosure?(.charactersFetched(characters))
         self.characters = characters
     }
 }
@@ -70,7 +71,6 @@ extension MarvelViewModel {
         return { [weak self] message in
             switch message {
             case let .charactersFetched(characters):
-                self?.messagesClosure?(.charactersFetched(characters))
                 self?.process(characters: characters)
             case .errorReceived(_):
                 // TODO: Handle this
