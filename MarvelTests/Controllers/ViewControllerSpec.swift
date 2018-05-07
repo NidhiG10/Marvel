@@ -12,11 +12,7 @@ import Nimble
 @testable import Marvel
 
 class MarvelViewModelMock: MarvelViewModel {
-//    var charactersArray: [Marvel.Character] = []
     
-    func characters(query: String? = nil, completion: @escaping ([Marvel.Character]?) -> Void) {
-        completion(characters)
-    }
 }
 
 class ViewControllerSpec: QuickSpec {
@@ -30,15 +26,32 @@ class ViewControllerSpec: QuickSpec {
                 let character = Character.entity(withDictionary: (mockLoader?.json.object)!)!
                 
                 viewModel = MarvelViewModelMock()
-                viewModel.characters = [character]
+                viewController = Storyboard.Main.charactersViewControllerScene.viewController() as! ViewController
                 
-                 viewController = Storyboard.Main.charactersViewControllerScene.viewController() as! ViewController
                 viewController.viewModel = viewModel
+                viewController.subscribeViewModel()
+                viewModel.process(characters: [character])
                 
                 //Load view components
                 let _ = viewController.view
             }
             
+            it("should have expected props setup") {
+                viewController.viewDidLoad()
+                expect(viewController.viewModel).toNot(beNil())
+                expect(viewController.tableViewDataSource).toNot(beNil())
+                expect(viewController.collectionViewDataSource).toNot(beNil())
+                expect(viewController.searchBar).toNot(beNil())
+                expect(viewController.activityIndicator).toNot(beNil())
+                expect(viewController.tableView).toNot(beNil())
+                expect(viewController.collectionView).toNot(beNil())
+            }
+            
+            it("should use mock response on fetchCharacters") {
+                viewController.viewDidLoad()
+                let count = viewController.tableViewDataSource.characters?.count ?? 0
+                expect(count).toEventually(equal(1))
+            }
         }
     }
 }

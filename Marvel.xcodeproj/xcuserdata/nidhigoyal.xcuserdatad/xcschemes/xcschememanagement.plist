@@ -9,6 +9,29 @@
 			<key>orderHint</key>
 			<integer>14</integer>
 		</dict>
+		<key>MarvelTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>2DBA7E0E2094842C0056F3BD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2DBA7E222094842C0056F3BD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2DBA7E2D2094842C0056F3BD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>
