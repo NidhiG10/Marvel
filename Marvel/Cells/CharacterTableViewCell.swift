@@ -22,14 +22,12 @@ class CharacterTableViewCell: UITableViewCell {
     var rightView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.red
         return view
     }()
     
     var thumbnailImageView: UIImageView = {
         let imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.backgroundColor = UIColor.green
         return imgView
     }()
     

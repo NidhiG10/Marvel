@@ -22,14 +22,14 @@ class CharacterDetailsViewController: UIViewController {
     var bottomView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.lightGray
         return view
     }()
     
     var imageView: UIImageView = {
         let imgView = UIImageView()
+        imgView.contentMode = .scaleToFill
         imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.backgroundColor = UIColor.green
         return imgView
     }()
     
@@ -45,7 +45,7 @@ extension CharacterDetailsViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.backgroundColor = UIColor.darkGray
         view.addSubview(self.imageView)
         view.addSubview(self.bottomView)
         self.bottomView.addSubview(self.name)
@@ -69,18 +69,15 @@ extension CharacterDetailsViewController {
     }
     
     func addContraints() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         imageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         imageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 300.0).isActive = true
         
-        bottomView.translatesAutoresizingMaskIntoConstraints = false
         bottomView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         bottomView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        bottomView.bottomAnchor.constraint(equalTo: self.imageView.bottomAnchor).isActive = true
         
-        name.translatesAutoresizingMaskIntoConstraints = false
         name.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor).isActive = true
         name.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor).isActive = true
         name.topAnchor.constraint(equalTo: bottomView.topAnchor).isActive = true

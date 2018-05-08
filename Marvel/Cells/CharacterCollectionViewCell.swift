@@ -22,14 +22,12 @@ class CharacterCollectionCell: UICollectionViewCell {
     var bottomView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.red
         return view
     }()
     
     var imageView: UIImageView = {
         let imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.backgroundColor = UIColor.green
         return imgView
     }()
     
