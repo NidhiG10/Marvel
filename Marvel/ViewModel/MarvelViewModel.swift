@@ -8,75 +8,79 @@
 
 import UIKit
 
-class MarvelViewModel: NSObject, MVVMBinding {
-    
-    /// Closure used to notify results or messages to the view
-    var messagesClosure: ((Message) -> Void)?
-    var characters: [Character]
-    
-    fileprivate(set) lazy var networkHandler: MarvelNetworkHandler = {
-        let handler = MarvelNetworkHandler()
-        handler.subscribe(withClosure: self.didReceiveModelMessageClosure())
-        return handler
-    }()
-    
-    override init() {
-        characters = []
-        super.init()
-    }
-    
-    public func process(characters: [Character]) {
-        self.messagesClosure?(.charactersFetched(characters))
-        self.characters = characters
-    }
+protocol CharactersDelegate {
+    func didSelectCharacter(at index: IndexPath)
 }
 
-extension MarvelViewModel: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        let query = searchBar.text ?? ""
-        if !query.isEmpty {
-            self.messagesClosure?(.fetchingCharacters)
-            self.networkHandler.send(signal: .getCharacters(query))
-        }
+
+class MarvelViewModel: NSObject {
+    var isShowingList = true
+    var collectionView : UICollectionView?
+    var tableView : UITableView?
+    var activityIndicator : UIActivityIndicatorView?
+    
+    var characters: [Character] = []
+    var networkHandler: MavelNetworkHandlerProtocol = MarvelNetworkHandler()
+    var collectionViewDataSource: MarvelCollectionDataSource?
+    var collectionViewDelegate: MarvelCollectionDelegate?
+    var tableViewDataSource: MarvelTableDataSource?
+    var tableViewDelegate: MarvelTableDelegate?
+    
+    var showCharacterDetails: ((Character) -> Void)?
+    
+    init(collectionView: UICollectionView, tableView: UITableView, activityIndicator:UIActivityIndicatorView) {
+        super.init()
+        self.collectionView = collectionView
+        self.tableView = tableView
+        self.activityIndicator = activityIndicator
+        
+        collectionViewDelegate = MarvelCollectionDelegate(self)
+        tableViewDelegate = MarvelTableDelegate(self)
+        
+        collectionViewDataSource = MarvelCollectionDataSource(collectionView: self.collectionView, delegate:collectionViewDelegate!)
+        tableViewDataSource = MarvelTableDataSource(tableView:self.tableView, delegate: tableViewDelegate!)
     }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
+    
 }
 
 extension MarvelViewModel {
-    
-    enum Signal {
-        case fetchCharacters(String?)
+    public func showAsGrid(value: Bool) {
+        self.isShowingList = !value
+        self.reloadData(characters: self.characters)
     }
     
-    enum Message {
-        case fetchingCharacters
-        case charactersFetched([Character])
-        case showCharacterDetails(Character)
-    }
-    
-    func didReceive(signal: Signal) {
-        switch signal {
-        case let .fetchCharacters(keyword):
-            self.networkHandler.send(signal: .getCharacters(keyword))
-        }
-    }
-    
-    /**
-     Messages received from model
-     */
-    func didReceiveModelMessageClosure() -> ((MarvelNetworkHandler.Message) -> Void) {
-        return { [weak self] message in
-            switch message {
-            case let .charactersFetched(characters):
-                self?.process(characters: characters)
-            case .errorReceived(_):
-                // TODO: Handle this
-                break
+    public func fetchCharacters(query: String?) {
+        networkHandler.getCharacters(.showCharacters(query)) {[unowned self] (characters) in
+            if let characters = characters {
+                self.characters = characters
             }
+            self.reloadData(characters: characters)
         }
     }
-    
 }
+
+extension MarvelViewModel : CharactersDelegate {
+    func didSelectCharacter(at index: IndexPath) {
+        if index.row <= characters.count - 1 {
+            let character = characters[index.row]
+            self.showCharacterDetails?(character)
+        }
+    }
+}
+
+
+extension MarvelViewModel {
+    func reloadData(characters: [Character]?) {
+        self.activityIndicator?.stopAnimating()
+        if isShowingList {
+            self.collectionView?.isHidden = true
+            self.tableView?.isHidden = false
+            self.tableViewDataSource?.process(characters: characters)
+        } else {
+            self.tableView?.isHidden = true
+            self.collectionView?.isHidden = false
+            self.collectionViewDataSource?.process(characters: characters)
+        }
+    }
+}
+

@@ -16,38 +16,17 @@ class MarvelCollectionDataSource: NSObject, UICollectionViewDelegateFlowLayout {
     
     var showCharacterDetails:((Character) -> Void)?
     
-    init(collectionView: UICollectionView) {
+    init(collectionView: UICollectionView?, delegate: UICollectionViewDelegate) {
         super.init()
         
         self.collectionView = collectionView
         self.collectionView?.dataSource = self
-        self.collectionView?.delegate = self
+        self.collectionView?.delegate = delegate
         self.collectionView?.register(CharacterCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         self.collectionView?.reloadData()
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize.zero
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.zero
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.size.width - 10.0
-        return CharacterCollectionCell.size(for: width)
-    }
-    
-    func process(characters: [Character]) {
+    func process(characters: [Character]?) {
         self.characters = characters
         self.collectionView?.reloadData()
     }
@@ -72,12 +51,37 @@ extension MarvelCollectionDataSource : UICollectionViewDataSource {
     }
 }
 
-extension MarvelCollectionDataSource : UICollectionViewDelegate {
+class MarvelCollectionDelegate : NSObject, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    let delegate: CharactersDelegate
+    
+    init(_ delegate: CharactersDelegate) {
+        self.delegate = delegate
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let character = self.characters?[indexPath.row] {
-            self.showCharacterDetails?(character)
-        }
+        delegate.didSelectCharacter(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize.zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.size.width - 10.0
+        return CharacterCollectionCell.size(for: width)
     }
 }
 

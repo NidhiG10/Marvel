@@ -9,6 +9,10 @@
 import Foundation
 import Moya
 
+protocol MavelNetworkHandlerProtocol {
+    func getCharacters(_ token: MarvelAPI, completion: @escaping ([Character]?) -> Void)
+}
+
 extension Response {
     func removeAPIWrappers() -> Response {
         guard let json = try? self.mapJSON() as? Dictionary<String, AnyObject>,
@@ -24,20 +28,17 @@ extension Response {
     }
 }
 
-class MarvelNetworkHandler: NSObject, MVVMBinding {
-    
-    var messagesClosure: ((Message) -> Void)?
+struct MarvelNetworkHandler {
     let provider: MoyaProvider<MarvelAPI>
     
-    override init() {
+    init() {
         provider = MoyaProvider<MarvelAPI>()
-        
-        super.init()
-        
     }
+}
+
+extension MarvelNetworkHandler {
     
-    fileprivate func getCharacters(_ token: MarvelAPI) {
-        
+    func requestCharacters(_ token: MarvelAPI, completion: (([Character]?) -> Void)?) {
         provider.request(token) { (result) in
             switch result {
             case let .success(moyaResponse):
@@ -46,10 +47,10 @@ class MarvelNetworkHandler: NSObject, MVVMBinding {
                 do {
                     let jsonData = try data.mapJSON()
                     let json = JSON(jsonData)
-//                    guard let code = json.object?["code"]?.integer && code == 200 else {
-//                        return self.messagesClosure?(.errorReceived(MarvelError())
-//                    }
-//                    return code
+                    //                    guard let code = json.object?["code"]?.integer && code == 200 else {
+                    //                        return self.messagesClosure?(.errorReceived(MarvelError())
+                    //                    }
+                    //                    return code
                     
                     var characterArray: [Character] = []
                     guard let characters = json.array else { return }
@@ -59,43 +60,24 @@ class MarvelNetworkHandler: NSObject, MVVMBinding {
                         }
                     }
                     
-                    self.messagesClosure?(.charactersFetched(characterArray))
+                    completion?(characterArray)
                     
                 }
                 catch {
-                    self.messagesClosure?(.errorReceived(error))
+                    completion?(nil)
                 }
                 
                 
             // do something in your app
-            case let .failure(error):
-                self.messagesClosure?(.errorReceived(error))
-                // TODO: handle the error == best. comment. ever.
+            case .failure(_):
+                completion?(nil)
             }
         }
     }
 }
 
-/**
- MVVM Binding methods and definitions
- */
-extension MarvelNetworkHandler {
-    
-    enum Signal {
-        case getCharacters(String?)
+extension MarvelNetworkHandler : MavelNetworkHandlerProtocol {
+    func getCharacters(_ token: MarvelAPI, completion: @escaping ([Character]?) -> Void) {
+        requestCharacters(token, completion: completion)
     }
-    
-    enum Message {
-        case errorReceived(Error?)
-        case charactersFetched([Character])
-    }
-    
-    func didReceive(signal: Signal) {
-        switch signal {
-        case let .getCharacters(keyword):
-            self.getCharacters(.showCharacters(keyword))
-        }
-    }
-    
 }
-

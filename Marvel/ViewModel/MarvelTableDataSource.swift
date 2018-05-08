@@ -16,17 +16,17 @@ class MarvelTableDataSource: NSObject {
     
     var showCharacterDetails: ((Character) -> Void)?
     
-    init(tableView: UITableView) {
+    init(tableView: UITableView?, delegate: UITableViewDelegate) {
         super.init()
         
         self.tableView = tableView
         self.tableView?.dataSource = self
-        self.tableView?.delegate = self
+        self.tableView?.delegate = delegate
         self.tableView?.register(CharacterTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         self.tableView?.reloadData()
     }
     
-    func process(characters: [Character]) {
+    func process(characters: [Character]?) {
         self.characters = characters
         self.tableView?.reloadData()
     }
@@ -47,12 +47,16 @@ extension MarvelTableDataSource : UITableViewDataSource {
     }
 }
 
-extension MarvelTableDataSource : UITableViewDelegate {
+class MarvelTableDelegate : NSObject, UITableViewDelegate {
+    
+    let delegate: CharactersDelegate
+    
+    init(_ delegate: CharactersDelegate) {
+        self.delegate = delegate
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let character = self.characters?[indexPath.row]{
-            self.showCharacterDetails?(character)
-        }
+        delegate.didSelectCharacter(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

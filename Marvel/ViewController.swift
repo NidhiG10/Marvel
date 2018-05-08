@@ -10,8 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var isShowingList = true
-    
     lazy var searchBar:UISearchBar = {
         let sb = UISearchBar()
         sb.sizeToFit()
@@ -48,25 +46,7 @@ class ViewController: UIViewController {
         return indicator
     }()
     
-    var viewModel: MarvelViewModel = MarvelViewModel()
-    
-    lazy var collectionViewDataSource: MarvelCollectionDataSource = {
-        let ds = MarvelCollectionDataSource(collectionView: self.collectionView)
-        ds.showCharacterDetails = {[weak self]
-            (character) -> Void in
-            self?.showCharacterDetails(character)
-        }
-        return ds
-    }()
-    
-    lazy var tableViewDataSource: MarvelTableDataSource = {
-        let ds = MarvelTableDataSource(tableView: self.tableView)
-        ds.showCharacterDetails = {[weak self]
-            (character) -> Void in
-            self?.showCharacterDetails(character)
-        }
-        return ds
-    }()
+    var viewModel: MarvelViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,13 +60,14 @@ class ViewController: UIViewController {
         
         setupConstraints()
         
-        subscribeViewModel()
-        self.searchBar.delegate = self.viewModel
-        self.viewModel.send(signal: .fetchCharacters(nil))
-    }
-    
-    func subscribeViewModel() {
-        viewModel.subscribe(withClosure: self.didReceiveViewModelMessageClosure())
+        viewModel = MarvelViewModel.init(collectionView: self.collectionView, tableView: self.tableView, activityIndicator: self.activityIndicator)
+        viewModel.showCharacterDetails = {[weak self]
+            (character) -> Void in
+            self?.showCharacterDetails(character)
+        }
+
+        self.searchBar.delegate = self
+        self.viewModel.fetchCharacters(query: nil)
     }
 
     func setupConstraints() {
@@ -112,20 +93,7 @@ class ViewController: UIViewController {
         self.activityIndicator.startAnimating()
         self.collectionView.isHidden = true
     }
-    
-    func reloadData(characters: [Character]) {
-        self.activityIndicator.stopAnimating()
-        if isShowingList {
-            self.collectionView.isHidden = true
-            self.tableView.isHidden = false
-            self.tableViewDataSource.process(characters: characters)
-        } else {
-            self.tableView.isHidden = true
-            self.collectionView.isHidden = false
-            self.collectionViewDataSource.process(characters: characters)
-        }
-    }
-    
+
     func showCharacterDetails(_ character:Character) {
         self.searchBar.resignFirstResponder()
         let characterDetailsVC = CharacterDetailsViewController(character: character)
@@ -136,35 +104,27 @@ class ViewController: UIViewController {
 
 extension ViewController {
     @IBAction func showAsGrid(_ sender: UIButton) {
-        isShowingList = false
-        reloadData(characters: self.viewModel.characters)
-        
+        self.viewModel.showAsGrid(value: true)
     }
     
     @IBAction func showAsTable(_ sender: UIButton) {
-        isShowingList = true
-        reloadData(characters: self.viewModel.characters)
+        self.viewModel.showAsGrid(value: false)
     }
 }
 
-/**
- MVVM Binding methods and definitions
- */
-extension ViewController {
-    
-        func didReceiveViewModelMessageClosure() -> ((MarvelViewModel.Message) -> Void) {
-            return { [weak self] message in
-                switch message {
-                case .fetchingCharacters:
-                    self?.startAnimatingActivityIndicator()
-                case let .charactersFetched(characters):
-                    self?.reloadData(characters: characters)
-                case let .showCharacterDetails(character):
-                    self?.showCharacterDetails(character)
-                }
+extension ViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        let query = searchBar.text ?? ""
+        if !query.isEmpty {
+            self.startAnimatingActivityIndicator()
+            self.viewModel.fetchCharacters(query: query)
         }
     }
-    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
 }
+
 
 
