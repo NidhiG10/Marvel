@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Marvel/ViewController.swift"
-            timestampString = "547115329.339394"
+            timestampString = "547460827.791196"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "setupConstraints()"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Marvel/ViewController.swift"
-            timestampString = "547115329.339501"
+            timestampString = "547460827.7920099"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
             landmarkName = "ViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -122,55 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Marvel/Controller/CharacterDetailsViewController.swift"
-            timestampString = "547115329.339893"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "init(character:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Marvel.CharacterDetailsViewController.__allocating_init(character: Swift.Optional&lt;Marvel.Character&gt;) -&gt; Marvel.CharacterDetailsViewController"
-                  moduleName = "Marvel"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nidhigoyal/Desktop/Nidhi/J/workpace/Marvel/Marvel/Controller/CharacterDetailsViewController.swift"
-                  timestampString = "547115329.692579"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "4">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Marvel.CharacterDetailsViewController.init(character: Swift.Optional&lt;Marvel.Character&gt;) -&gt; Marvel.CharacterDetailsViewController"
-                  moduleName = "Marvel"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nidhigoyal/Desktop/Nidhi/J/workpace/Marvel/Marvel/Controller/CharacterDetailsViewController.swift"
-                  timestampString = "547115329.694966"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "42"
-                  endingLineNumber = "42"
-                  offsetFromSymbolStart = "18">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Marvel/Controller/CharacterDetailsViewController.swift"
-            timestampString = "547115329.3399971"
+            timestampString = "547460827.792926"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "54"
@@ -233,13 +185,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Marvel/API Service/MarvelNetworkHandler.swift"
-            timestampString = "547115329.340179"
+            filePath = "MarvelTests/Controllers/ViewControllerSpec.swift"
+            timestampString = "547460827.793106"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "getCharacters(_:)"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "spec()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -249,13 +201,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Marvel/ViewModel/MarvelCollectionDataSource.swift"
-            timestampString = "547115329.34025"
+            filePath = "Marvel/ViewModel/MarvelTableDataSource.swift"
+            timestampString = "547460827.7936209"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "collectionView(_:layout:referenceSizeForHeaderInSection:)"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -265,13 +217,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Marvel/ViewModel/MarvelCollectionDataSource.swift"
-            timestampString = "547115329.3403111"
+            filePath = "Marvel/ViewModel/MarvelViewModel.swift"
+            timestampString = "547460827.794192"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "collectionView(_:layout:minimumInteritemSpacingForSectionAt:)"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "didSelectCharacter(at:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -281,13 +233,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Marvel/ViewModel/MarvelCollectionDataSource.swift"
-            timestampString = "547115329.340378"
+            filePath = "Marvel/ViewController.swift"
+            timestampString = "547460827.794558"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "collectionView(_:layout:insetForSectionAt:)"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "showCharacterDetails(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -297,14 +249,62 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Marvel/Cells/CharacterCollectionViewCell.swift"
-            timestampString = "547070461.73079"
+            filePath = "MarvelTests/Controllers/ViewControllerSpec.swift"
+            timestampString = "547460827.794902"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "size(for:)"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "spec()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MarvelTests/Controllers/ViewControllerSpec.swift"
+            timestampString = "547460919.2538821"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "spec()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in closure #1 () -&gt; () in MarvelTests.ViewControllerSpec.spec() -&gt; ()"
+                  moduleName = "MarvelTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nidhigoyal/Desktop/Nidhi/J/workpace/Marvel/MarvelTests/Controllers/ViewControllerSpec.swift"
+                  timestampString = "547460919.259142"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "2090">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #5 : @autoclosure () throws -&gt; Swift.Optional&lt;__ObjC.UICollectionView&gt; in closure #2 () -&gt; () in closure #1 () -&gt; () in MarvelTests.ViewControllerSpec.spec() -&gt; ()"
+                  moduleName = "MarvelTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nidhigoyal/Desktop/Nidhi/J/workpace/Marvel/MarvelTests/Controllers/ViewControllerSpec.swift"
+                  timestampString = "547460919.260617"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "29">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

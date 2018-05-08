@@ -20,12 +20,9 @@ class CharactersCollectionDatasourceSpec: QuickSpec {
                 let testBundle = Bundle(for: type(of: self))
                 let mockLoader = MockLoader(file: "character", in: testBundle)
                 character = Character.entity(withDictionary: (mockLoader?.json.object)!)!
-                let viewModel = MarvelViewModel()
-                viewModel.characters = [character]
-                
+                let networkHandler = MarvelNetworkHandlerMock(characters: [character])
                 controller = Storyboard.Main.charactersViewControllerScene.viewController() as! ViewController
-                
-                controller.viewModel = viewModel
+                controller.viewModel.networkHandler = networkHandler
                 
                 //Load view components
                 let _ = controller.view

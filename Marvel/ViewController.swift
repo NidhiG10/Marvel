@@ -60,7 +60,7 @@ class ViewController: UIViewController {
         
         setupConstraints()
         
-        viewModel = MarvelViewModel.init(collectionView: self.collectionView, tableView: self.tableView, activityIndicator: self.activityIndicator)
+        viewModel = viewModel ?? MarvelViewModel.init(collectionView: self.collectionView, tableView: self.tableView, activityIndicator: self.activityIndicator)
         viewModel.showCharacterDetails = {[weak self]
             (character) -> Void in
             self?.showCharacterDetails(character)
