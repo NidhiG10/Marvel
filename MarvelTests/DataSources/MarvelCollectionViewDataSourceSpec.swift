@@ -8,9 +8,10 @@
 
 import Foundation
 import Quick
+import Nimble
 @testable import Marvel
 
-class CharactersCollectionDatasourceSpec: QuickSpec {
+class MarvelCollectionViewDataSourceSpec: QuickSpec {
     override func spec() {
         describe("CharactersCollectionDatasource") {
             var controller: ViewController!
@@ -22,13 +23,38 @@ class CharactersCollectionDatasourceSpec: QuickSpec {
                 character = Character.entity(withDictionary: (mockLoader?.json.object)!)!
                 let networkHandler = MarvelNetworkHandlerMock(characters: [character])
                 controller = Storyboard.Main.charactersViewControllerScene.viewController() as! ViewController
-                controller.viewModel.networkHandler = networkHandler
+                
+                let viewModel = MarvelViewModel (collectionView: controller.collectionView, tableView: controller.tableView, activityIndicator: controller.activityIndicator)
+                
+                viewModel.networkHandler = networkHandler
+                controller.viewModel = viewModel
                 
                 //Load view components
                 let _ = controller.view
                 controller.showAsGrid(UIButton())
             }
             
+            it("should have a valid datasource") {
+                expect(controller.viewModel.collectionViewDataSource).toNot(beNil())
+            }
+            
+            it("should have a cell of expected type") {
+                let indexPath = IndexPath(row: 0, section: 0)
+                let cell = controller.viewModel.collectionViewDataSource!.collectionView(controller.collectionView, cellForItemAt: indexPath)
+                expect(cell.isKind(of: CharacterCollectionCell.self)).to(beTruthy())
+            }
+            
+            it("should have a configured cell") {
+                let indexPath = IndexPath(row: 0, section: 0)
+                let cell = controller.viewModel.collectionViewDataSource!.collectionView(controller.collectionView, cellForItemAt: indexPath) as! CharacterCollectionCell
+                let name = cell.name.text!
+                expect(name).to(equal(character.name))
+            }
+            
+            it("should have the right numberOfRowsInSection") {
+                let count = controller.viewModel.collectionViewDataSource!.collectionView(controller.collectionView, numberOfItemsInSection: 0)
+                expect(count).to(equal(1))
+            }
         }
     }
 }

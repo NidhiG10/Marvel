@@ -28,7 +28,6 @@
 		2DBA7E182094842C0056F3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DBA7E162094842C0056F3BD /* Main.storyboard */; };
 		2DBA7E1A2094842C0056F3BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DBA7E192094842C0056F3BD /* Assets.xcassets */; };
 		2DBA7E1D2094842C0056F3BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DBA7E1B2094842C0056F3BD /* LaunchScreen.storyboard */; };
-		2DBA7E282094842C0056F3BD /* MarvelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA7E272094842C0056F3BD /* MarvelTests.swift */; };
 		2DBA7E332094842C0056F3BD /* MarvelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA7E322094842C0056F3BD /* MarvelUITests.swift */; };
 		2DBA7E4F2094F1C30056F3BD /* MarvelAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA7E4E2094F1C30056F3BD /* MarvelAPIService.swift */; };
 		2DBA7E512094FCC70056F3BD /* MarvelNetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA7E502094FCC70056F3BD /* MarvelNetworkHandler.swift */; };
@@ -88,7 +87,6 @@
 		2DBA7E1C2094842C0056F3BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DBA7E1E2094842C0056F3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2DBA7E232094842C0056F3BD /* MarvelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarvelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2DBA7E272094842C0056F3BD /* MarvelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelTests.swift; sourceTree = "<group>"; };
 		2DBA7E292094842C0056F3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2DBA7E2E2094842C0056F3BD /* MarvelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarvelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DBA7E322094842C0056F3BD /* MarvelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelUITests.swift; sourceTree = "<group>"; };
@@ -279,7 +277,6 @@
 				2D29A3A4209F72C00064271B /* DataSources */,
 				2D29A3A1209F6FCC0064271B /* TestHelper */,
 				2D29A398209F6F180064271B /* Mock Response */,
-				2DBA7E272094842C0056F3BD /* MarvelTests.swift */,
 				2DBA7E292094842C0056F3BD /* Info.plist */,
 			);
 			path = MarvelTests;
@@ -678,7 +675,6 @@
 				2D29A3A6209F72E30064271B /* MarvelCollectionViewDataSourceSpec.swift in Sources */,
 				2D29A3AB209F75D50064271B /* ViewControllerSpec.swift in Sources */,
 				2D29A3A3209F6FDB0064271B /* MockLoader.swift in Sources */,
-				2DBA7E282094842C0056F3BD /* MarvelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
